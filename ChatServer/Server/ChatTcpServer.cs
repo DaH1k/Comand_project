@@ -53,4 +53,20 @@ public class ChatTcpServer
             }
         }
     }
+
+    public async Task BroadcastSystemAsync(string message)
+    {
+        var json = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            Type = "System",
+            Text = message
+        });
+
+        var data = Encoding.UTF8.GetBytes(json);
+
+        foreach (var client in _clients)
+        {
+            await client.SendAsync(json);
+        }
+    }
 }
