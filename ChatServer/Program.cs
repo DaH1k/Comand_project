@@ -1,4 +1,6 @@
-﻿namespace ChatServer
+using ChatServer.Server;
+
+namespace ChatServer
 {
     internal class Program
     {
