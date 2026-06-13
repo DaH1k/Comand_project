@@ -20,35 +20,61 @@ public class ClientConnection
     }
 
     public async Task HandleAsync()
+{
+    try
     {
-        try
+        byte[] buffer = new byte[4096];
+
+        while (true)
         {
-            byte[] buffer = new byte[4096];
+            int bytesRead = await _stream.ReadAsync(buffer);
 
-            while (true)
+            if (bytesRead == 0)
+                break;
+
+            string json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+            Console.WriteLine($"Received: {json}");
+
+            var message = JsonSerializer.Deserialize<MessageDto>(json);
+
+            if (message == null)
+                continue;
+
+            // LOGIN
+            if (message.Type == "Login")
             {
-                int bytesRead = await _stream.ReadAsync(buffer);
+                Username = message.Sender;
 
-                if (bytesRead == 0)
-                    break;
+                Console.WriteLine($"{Username} is ONLINE");
 
-                string json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                await _server.BroadcastSystemAsync($"{Username} joined the chat");
+                continue;
+            }
 
-                Console.WriteLine($"Received: {json}");
-
+            // MESSAGE
+            if (message.Type == "Message")
+            {
                 await _server.BroadcastAsync(json, this);
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        finally
-        {
-            _server.RemoveClient(this);
-            _client.Close();
-        }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+    }
+    finally
+    {
+        if (!string.IsNullOrEmpty(Username))
+        {
+            Console.WriteLine($"{Username} is OFFLINE");
+            await _server.BroadcastSystemAsync($"{Username} left the chat");
+        }
+
+        _server.RemoveClient(this);
+        _client.Close();
+    }
+}
 
     public async Task SendAsync(string message)
     {
