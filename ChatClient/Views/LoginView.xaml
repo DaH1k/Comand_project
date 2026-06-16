@@ -1,0 +1,46 @@
+﻿<Window x:Class="ChatClient.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login" Height="440" Width="380"
+        WindowStartupLocation="CenterScreen"
+        Background="#181824">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" Margin="30">
+
+            <!-- Заголовок форми -->
+            <TextBlock Text="LOGIN"
+                       Foreground="#6C5CE7"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,30"/>
+
+            <!-- Поле: Логін -->
+            <TextBlock Text="Login" Foreground="#A0A0C0" FontSize="12" Margin="0,0,0,5"/>
+            <TextBox x:Name="LoginTextBox" 
+                     Background="#222235" Foreground="White" BorderThickness="1" BorderBrush="#3F3F5F"
+                     Padding="10,8" Margin="0,0,0,15" FontSize="14"/>
+
+            <!-- Поле: Пароль -->
+            <TextBlock Text="Password" Foreground="#A0A0C0" FontSize="12" Margin="0,0,0,5"/>
+            <PasswordBox x:Name="PasswordBox" 
+                         Background="#222235" Foreground="White" BorderThickness="1" BorderBrush="#3F3F5F"
+                         Padding="10,8" Margin="0,0,0,25" FontSize="14"/>
+
+            <!-- Головна кнопка входу -->
+            <Button  Content="Login"
+                    Background="#6C5CE7" Foreground="White" BorderThickness="0"
+                    Padding="0,12" FontSize="15" FontWeight="SemiBold"
+                    Margin="0,0,0,12"
+                    Click="Login_Click"/>
+
+            <!-- Допоміжна кнопка реєстрації -->
+            <Button Content="Register"
+                    Background="#222235" Foreground="#A0A0C0" BorderThickness="0"
+                    Padding="0,10" FontSize="14"
+                    Click="Register_Click"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

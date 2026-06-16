@@ -1,0 +1,57 @@
+﻿<Window x:Class="ChatClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Chat Client" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#181824">
+
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <!-- Трохи розширив бічну панель, щоб тексту не було тісно -->
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- МЕНЮ (Темніший лівий блок) -->
+        <Grid Grid.Column="0"  x:Name="LeftMenu" Background="#11111A">
+            <StackPanel Margin="10,20,10,10">
+
+                <!-- Красивий заголовок замість порожнечі зверху -->
+                <TextBlock Text="BINGO CHAT" 
+                           Foreground="#6C5CE7" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,25"/>
+
+                <!-- Кнопки з відступами (Padding всередині, Margin ззовні) та приємними кольорами -->
+                <Button Content="💬  Chat" Click="Chat_Click"
+                        Background="#222235" Foreground="White" BorderThickness="0"
+                        Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" FontSize="14"/>
+
+                <Button Content="👤  Profile" Click="Profile_Click"
+                        Background="#222235" Foreground="White" BorderThickness="0"
+                        Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" FontSize="14"/>
+
+                <Button Content="⚙  Settings" Click="Settings_Click"
+                        Background="#222235" Foreground="White" BorderThickness="0"
+                        Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" FontSize="14"/>
+
+                <Button Content="🛡  Admin" Click="Admin_Click"
+                        Background="#222235" Foreground="White" BorderThickness="0"
+                        Padding="15,10" Margin="0,0,0,8" HorizontalContentAlignment="Left" FontSize="14"/>
+
+                <!-- Кнопка виходу виділена червонуватим кольором -->
+                <Button Content="🚪  Logout" Click="Logout_Click"
+                        Background="#3A1F2D" Foreground="#FF6B6B" BorderThickness="0"
+                        Padding="15,10" Margin="0,20,0,0" HorizontalContentAlignment="Left" FontSize="14" FontWeight="SemiBold"/>
+
+            </StackPanel>
+        </Grid>
+
+        <!-- КОНТЕНТ (Світліший правий блок) -->
+        <ContentControl x:Name="MainContent"
+                        Grid.Column="1"
+                        Margin="20"/>
+    </Grid>
+</Window>

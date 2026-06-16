@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="ChatClient.Views.AdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="#181824">
+        <StackPanel Margin="20" MaxWidth="400" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+            <!-- Заголовок форми (Стильний червоний колір замість яскраво-різкого) -->
+            <TextBlock Text="ADMIN PANEL"
+           Foreground="#FF5555"
+           FontSize="24"
+           FontWeight="Bold"
+           HorizontalAlignment="Center"
+           Margin="0,10,0,30"/>
+
+            <!-- Кнопка блокування (Виділена червоним фоном як небезпечна дія) -->
+            <Button Content="🛑  Ban User"
+                    Background="#3A1F2D" Foreground="#FF6B6B" BorderThickness="0"
+                    Padding="0,12" FontSize="15" FontWeight="SemiBold"
+                    Margin="0,0,0,12"/>
+
+            <!-- Звичайні адмін-кнопки (У стилі всього додатку) -->
+            <Button Content="🗑  Delete Message"
+                    Background="#222235" Foreground="White" BorderThickness="0"
+                    Padding="0,12" FontSize="15"
+                    Margin="0,0,0,12"/>
+
+            <Button Content="📜  View Logs"
+                    Background="#222235" Foreground="White" BorderThickness="0"
+                    Padding="0,12" FontSize="15"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

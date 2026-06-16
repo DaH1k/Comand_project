@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="ChatClient.Views.ChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="#181824">
+        <Grid.RowDefinitions>
+            <!-- Область повідомлень займає весь вільний простір -->
+            <RowDefinition Height="*"/>
+            <!-- Нижня панель вводу фіксованої висоти -->
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <!-- СПИСОК ПОВІДОМЛЕНЬ -->
+        <ListBox x:Name="MessagesList"
+                 Grid.Row="0"
+                 Background="Transparent"
+                 Foreground="White"
+                 BorderThickness="0"
+                 Padding="15"
+                 FontSize="14"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+
+        <!-- ПАНЕЛЬ ВВОДУ (Розтягується автоматично) -->
+        <Grid Grid.Row="1" Margin="15,0,15,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Поле введення тексту -->
+            <TextBox x:Name="MessageBox"
+                     Grid.Column="0"
+                     Background="#222235" Foreground="White" 
+                     BorderBrush="#3F3F5F" BorderThickness="1"
+                     Padding="12,10" FontSize="14" 
+                     VerticalContentAlignment="Center"
+                     Margin="0,0,10,0"/>
+
+            <!-- Кнопка відправки -->
+            <Button Content="🚀  Send"
+                    Grid.Column="1"
+                    Background="#6C5CE7" Foreground="White" 
+                    BorderThickness="0" Padding="25,0" 
+                    FontSize="14" FontWeight="SemiBold" 
+                    Cursor="Hand"
+                    Click="Send_Click"/>
+        </Grid>
+
+    </Grid>
+</UserControl>

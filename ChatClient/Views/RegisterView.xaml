@@ -1,0 +1,45 @@
+﻿<Window x:Class="ChatClient.Views.RegisterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Register" Height="480" Width="380"
+        WindowStartupLocation="CenterScreen"
+        Background="#181824">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" Margin="30">
+
+            <!-- Заголовок форми -->
+            <TextBlock Text="REGISTER"
+                       Foreground="#6C5CE7"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,30"/>
+
+            <!-- Поле: Логін -->
+            <TextBlock Text="Login" Foreground="#A0A0C0" FontSize="12" Margin="0,0,0,5"/>
+            <TextBox x:Name="LoginBox" 
+                     Background="#222235" Foreground="White" BorderThickness="1" BorderBrush="#3F3F5F"
+                     Padding="10,8" Margin="0,0,0,15" FontSize="14"/>
+
+            <!-- Поле: Пароль -->
+            <TextBlock Text="Password" Foreground="#A0A0C0" FontSize="12" Margin="0,0,0,5"/>
+            <PasswordBox x:Name="PasswordBox" 
+                         Background="#222235" Foreground="White" BorderThickness="1" BorderBrush="#3F3F5F"
+                         Padding="10,8" Margin="0,0,0,15" FontSize="14"/>
+
+            <!-- Поле: Підтвердження пароля -->
+            <TextBlock Text="Confirm Password" Foreground="#A0A0C0" FontSize="12" Margin="0,0,0,5"/>
+            <PasswordBox x:Name="ConfirmBox" 
+                         Background="#222235" Foreground="White" BorderThickness="1" BorderBrush="#3F3F5F"
+                         Padding="10,8" Margin="0,0,0,25" FontSize="14"/>
+
+            <!-- Кнопка створення акаунту -->
+            <Button Content="Create account"
+                    Background="#6C5CE7" Foreground="White" BorderThickness="0"
+                    Padding="0,12" FontSize="15" FontWeight="SemiBold"
+                    Click="Register_Click"/>
+
+        </StackPanel>
+    </Grid>
+</Window>
