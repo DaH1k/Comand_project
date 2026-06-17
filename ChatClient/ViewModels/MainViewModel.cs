@@ -11,6 +11,7 @@ namespace ChatClient.ViewModels
         private readonly ClientService _clientService;
 
         public ObservableCollection<MessageModel> Messages { get; } = new();
+        public ObservableCollection<string> OnlineUsers { get; } = new();
 
         public MainViewModel(ClientService clientService)
         {
@@ -21,6 +22,17 @@ namespace ChatClient.ViewModels
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     Messages.Add(msg);
+                });
+            };
+
+            _clientService.UsersListReceived += users =>
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    OnlineUsers.Clear();
+
+                    foreach (var user in users)
+                        OnlineUsers.Add(user);
                 });
             };
         }

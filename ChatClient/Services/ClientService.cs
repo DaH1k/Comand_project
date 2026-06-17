@@ -6,41 +6,43 @@ using System.Text.Json;
 
 namespace ChatClient.Services
 {
-
-
-public class ClientService
-{
+    public class ClientService
+    {
         private TcpClient? _client;
         private NetworkStream? _stream;
+        private StreamReader? _reader;
 
         public event Action<MessageModel>? MessageReceived;
+        public event Action<List<string>>? UsersListReceived;
 
-    public async Task ConnectAsync(string host, int port)
-    {
-        _client = new TcpClient();
-        await _client.ConnectAsync(host, port);
-        _stream = _client.GetStream();
+        private TaskCompletionSource<string>? _loginResultTcs;
+        private TaskCompletionSource<string>? _registerResultTcs;
 
-        _ = ListenAsync();
-    }
+        public async Task ConnectAsync(string host, int port)
+        {
+            _client = new TcpClient();
+            await _client.ConnectAsync(host, port);
+
+            _stream = _client.GetStream();
+            _reader = new StreamReader(_stream, Encoding.UTF8);
+
+            _ = ListenAsync();
+        }
 
         private async Task ListenAsync()
         {
-            var buffer = new byte[4096];
             while (true)
             {
                 try
                 {
-                    int bytesRead = await _stream.ReadAsync(buffer);
-                    if (bytesRead == 0)
-                    {
-                        // клієнт відключився
+                    if (_reader == null)
                         break;
-                    }
 
-                    string json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    string? json = await _reader.ReadLineAsync();
 
-                    // Якщо це результат логіну
+                    if (json == null)
+                        break;
+
                     var loginResult = JsonSerializer.Deserialize<LoginResultDto>(json);
                     if (loginResult?.Type == "LoginResult")
                     {
@@ -48,7 +50,6 @@ public class ClientService
                         continue;
                     }
 
-                    // Якщо це результат реєстрації
                     var registerResult = JsonSerializer.Deserialize<RegisterResultDto>(json);
                     if (registerResult?.Type == "RegisterResult")
                     {
@@ -56,10 +57,18 @@ public class ClientService
                         continue;
                     }
 
-                    // Інакше — звичайне повідомлення
+                    var usersList = JsonSerializer.Deserialize<UsersListDto>(json);
+                    if (usersList?.Type == "UsersList")
+                    {
+                        UsersListReceived?.Invoke(usersList.Users);
+                        continue;
+                    }
+
                     var msg = JsonSerializer.Deserialize<MessageModel>(json);
-                    if (msg != null)
+                    if (msg?.Text != null)
+                    {
                         MessageReceived?.Invoke(msg);
+                    }
                 }
                 catch (IOException ex)
                 {
@@ -69,7 +78,6 @@ public class ClientService
                 catch (JsonException ex)
                 {
                     Console.WriteLine($"JSON parsing error: {ex.Message}");
-                    // Можна продовжити читання або вийти
                     continue;
                 }
                 catch (Exception ex)
@@ -80,31 +88,28 @@ public class ClientService
             }
         }
 
-        // 🔹 Відправка сирого JSON
         public async Task SendRawAsync(string json)
-    {
-        byte[] data = Encoding.UTF8.GetBytes(json);
-        await _stream.WriteAsync(data);
-    }
+        {
+            if (_stream == null)
+                return;
 
-    // 🔹 Очікування результату логіну
-    private TaskCompletionSource<string>? _loginResultTcs;
+            json += "\n";
 
-    public Task<string> WaitForLoginResultAsync()
-    {
-        _loginResultTcs = new TaskCompletionSource<string>();
-        return _loginResultTcs.Task;
-    }
+            byte[] data = Encoding.UTF8.GetBytes(json);
+            await _stream.WriteAsync(data, 0, data.Length);
+        }
 
-    // 🔹 Очікування результату реєстрації
-    private TaskCompletionSource<string>? _registerResultTcs;
+        public Task<string> WaitForLoginResultAsync()
+        {
+            _loginResultTcs = new TaskCompletionSource<string>();
+            return _loginResultTcs.Task;
+        }
 
-    public Task<string> WaitForRegisterResultAsync()
-    {
-        _registerResultTcs = new TaskCompletionSource<string>();
-        return _registerResultTcs.Task;
-    }
-
+        public Task<string> WaitForRegisterResultAsync()
+        {
+            _registerResultTcs = new TaskCompletionSource<string>();
+            return _registerResultTcs.Task;
+        }
 
         public async Task SendMessageAsync(MessageModel msg)
         {
@@ -119,21 +124,27 @@ public class ClientService
         }
 
         public void Disconnect()
-    {
-        _client.Close();
+        {
+            _stream?.Close();
+            _client?.Close();
+        }
     }
-}
 
-// DTO для результату логіну
-public class LoginResultDto
-{
-    public string Type { get; set; } = string.Empty;
-    public string Text { get; set; } = string.Empty;
-}
+    public class LoginResultDto
+    {
+        public string Type { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+    }
 
     public class RegisterResultDto
     {
-        public string Type { get; set; } = string.Empty;  // "RegisterResult"
-        public string Text { get; set; } = string.Empty;  // "OK" або "FAIL"
+        public string Type { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+    }
+
+    public class UsersListDto
+    {
+        public string Type { get; set; } = string.Empty;
+        public List<string> Users { get; set; } = new();
     }
 }

@@ -3,48 +3,74 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid Background="#181824">
-        <Grid.RowDefinitions>
-            <!-- Область повідомлень займає весь вільний простір -->
-            <RowDefinition Height="*"/>
-            <!-- Нижня панель вводу фіксованої висоти -->
-            <RowDefinition Height="70"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="220"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- СПИСОК ПОВІДОМЛЕНЬ -->
-        <ListBox x:Name="MessagesList"
-                 Grid.Row="0"
-                 Background="Transparent"
-                 Foreground="White"
-                 BorderThickness="0"
-                 Padding="15"
-                 FontSize="14"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
 
-        <!-- ПАНЕЛЬ ВВОДУ (Розтягується автоматично) -->
-        <Grid Grid.Row="1" Margin="15,0,15,15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <ListBox x:Name="MessagesList"
+                     Grid.Row="0"
+                     Background="Transparent"
+                     Foreground="White"
+                     BorderThickness="0"
+                     Padding="15"
+                     FontSize="14"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"/>
 
-            <!-- Поле введення тексту -->
-            <TextBox x:Name="MessageBox"
-                     Grid.Column="0"
-                     Background="#222235" Foreground="White" 
-                     BorderBrush="#3F3F5F" BorderThickness="1"
-                     Padding="12,10" FontSize="14" 
-                     VerticalContentAlignment="Center"
-                     Margin="0,0,10,0"/>
+            <Grid Grid.Row="1" Margin="15,0,15,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- Кнопка відправки -->
-            <Button Content="🚀  Send"
-                    Grid.Column="1"
-                    Background="#6C5CE7" Foreground="White" 
-                    BorderThickness="0" Padding="25,0" 
-                    FontSize="14" FontWeight="SemiBold" 
-                    Cursor="Hand"
-                    Click="Send_Click"/>
+                <TextBox x:Name="MessageBox"
+                         Grid.Column="0"
+                         Background="#222235"
+                         Foreground="White"
+                         BorderBrush="#3F3F5F"
+                         BorderThickness="1"
+                         Padding="12,10"
+                         FontSize="14"
+                         VerticalContentAlignment="Center"
+                         Margin="0,0,10,0"/>
+
+                <Button Content="🚀  Send"
+                        Grid.Column="1"
+                        Background="#6C5CE7"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Padding="25,0"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        Click="Send_Click"/>
+            </Grid>
         </Grid>
 
+        <Border Grid.Column="1"
+                Background="#202033"
+                BorderBrush="#343454"
+                BorderThickness="1,0,0,0"
+                Padding="12">
+            <StackPanel>
+                <TextBlock Text="Online users"
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                <ListBox ItemsSource="{Binding OnlineUsers}"
+                         Background="Transparent"
+                         Foreground="White"
+                         BorderThickness="0"
+                         FontSize="14"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
